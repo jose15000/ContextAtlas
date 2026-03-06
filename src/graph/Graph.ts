@@ -7,6 +7,7 @@ export class Graph {
 
     addNode(node: Node) {
         this.nodes.set(node.id, node)
+
     }
     addEdge(edge: Edge) {
         if (!this.edges.has(edge.from)) {
