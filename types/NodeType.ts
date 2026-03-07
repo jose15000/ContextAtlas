@@ -7,4 +7,7 @@ export type NodeType =
     "agent_thought" |
     "tool_call" |
     "code_change" |
-    "implementation";
+    "implementation" |
+    "interface" |
+    "module" |
+    "export";

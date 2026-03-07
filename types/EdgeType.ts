@@ -2,7 +2,7 @@ export type EdgeType =
     "IMPORTS" |
     "EXPORTS"
     | "CALLS"
-    | "IMPLEMMNTS"
+    | "IMPLEMENTS"
     | "DEFINES"
     | "GENERATED_BY"
     | "THINKS"
