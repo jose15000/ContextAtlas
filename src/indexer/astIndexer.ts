@@ -1,6 +1,6 @@
 import { Project, SyntaxKind, Node as TsMorphNode } from "ts-morph";
-import { Graph } from "../graph/Graph";
-import { Node } from "../../types/Node";
+import { Graph } from "../graph/Graph.js";
+import { Node } from "../../types/Node.js";
 
 
 export function buildContextGraph(dir: string): Graph {

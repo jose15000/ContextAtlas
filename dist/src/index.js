@@ -1,2 +1,2 @@
-export { buildContextGraph } from "./indexer/astIndexer";
-export { Graph } from "./graph/Graph";
+export { buildContextGraph } from "./indexer/astIndexer.js";
+export { Graph } from "./graph/Graph.js";

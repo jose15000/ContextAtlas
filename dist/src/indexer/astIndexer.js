@@ -1,5 +1,5 @@
 import { Project, SyntaxKind } from "ts-morph";
-import { Graph } from "../graph/Graph";
+import { Graph } from "../graph/Graph.js";
 export function buildContextGraph(dir) {
     const graph = new Graph();
     const project = new Project({

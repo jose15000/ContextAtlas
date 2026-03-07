@@ -1,4 +1,4 @@
-import { Graph } from "../graph/Graph";
+import { Graph } from "../graph/Graph.js";
 
 export function expandGraph(graph: Graph, start: string, depth = 2) {
     const visited = new Set<string>();
