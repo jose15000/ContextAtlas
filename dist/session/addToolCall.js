@@ -1,13 +1,14 @@
-export function addToolCall(graph, tool, thought) {
-    const id = "tool_" + Date.now();
+export function addToolCall(graph, tool, thoughtId) {
+    const id = crypto.randomUUID();
     graph.addNode({
-        id: id,
+        id,
         type: "tool_call",
         data: { tool }
     });
     graph.addEdge({
-        from: thought,
+        from: thoughtId,
         to: id,
         type: "CALLS_TOOL"
     });
+    return id;
 }

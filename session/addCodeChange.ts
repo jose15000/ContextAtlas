@@ -1,18 +1,19 @@
 import { Graph } from "../src/graph/Graph";
 
-export function addCodeChange(graph: Graph, change: string, thought: string) {
+export function addCodeChange(graph: Graph, change: string, thoughtId: string) {
+    const id = crypto.randomUUID();
 
-    const id = "codeChange_" + Date.now();
     graph.addNode({
-        id: id,
+        id,
         type: "code_change",
         data: { change }
-    })
+    });
 
     graph.addEdge({
-        from: thought,
+        from: thoughtId,
         to: id,
         type: "MODIFIES"
-    })
+    });
 
+    return id;
 }

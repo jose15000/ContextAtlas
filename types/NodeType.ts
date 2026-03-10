@@ -1,6 +1,7 @@
 export type NodeType =
     "file" |
     "function" |
+    "method" |
     "class" |
     "import" |
     "user_prompt" |

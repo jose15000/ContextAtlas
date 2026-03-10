@@ -1,13 +1,14 @@
-export function addCodeChange(graph, change, thought) {
-    const id = "codeChange_" + Date.now();
+export function addCodeChange(graph, change, thoughtId) {
+    const id = crypto.randomUUID();
     graph.addNode({
-        id: id,
+        id,
         type: "code_change",
         data: { change }
     });
     graph.addEdge({
-        from: thought,
+        from: thoughtId,
         to: id,
         type: "MODIFIES"
     });
+    return id;
 }

@@ -1,5 +1,5 @@
 export function addPrompt(graph, prompt) {
-    const id = "prompt_" + Date.now();
+    const id = crypto.randomUUID();
     graph.addNode({
         id,
         type: "user_prompt",

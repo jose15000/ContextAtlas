@@ -1,10 +1,10 @@
 import { Graph } from "../src/graph/Graph";
 
 export function addThought(graph: Graph, promptId: string, thought: string) {
-    const id = "thought_" + Date.now();
+    const id = crypto.randomUUID();
 
     graph.addNode({
-        id: id,
+        id,
         type: "agent_thought",
         data: { thought }
     });
@@ -12,6 +12,8 @@ export function addThought(graph: Graph, promptId: string, thought: string) {
     graph.addEdge({
         from: promptId,
         to: id,
-        type: "GENERATED_BY"
+        type: "THINKS"
     });
+
+    return id;
 }

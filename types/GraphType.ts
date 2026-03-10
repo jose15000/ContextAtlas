@@ -1,0 +1,1 @@
+export type GraphType = "File" | "Reasoning" | "Code" | "Changes";
