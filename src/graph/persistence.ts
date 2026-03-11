@@ -1,7 +1,7 @@
 import fs from "fs";
 import { Graph } from "./Graph.js";
-import { Node } from "../../types/Node.js";
-import { Edge } from "../../types/Edge.js";
+import { Node } from "../types/Node.js";
+import { Edge } from "../types/Edge.js";
 
 interface SerializedGraph {
     nodes: Node[];
@@ -34,7 +34,6 @@ export function loadGraph(filePath: string): Graph | null {
         }
         return graph;
     } catch {
-        // Cache corrupted — will be rebuilt
         return null;
     }
 }

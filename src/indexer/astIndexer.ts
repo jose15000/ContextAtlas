@@ -6,11 +6,13 @@ import { indexInterfaces } from "./extractors/interfaces.js";
 import { indexImports } from "./extractors/imports.js";
 
 const EXCLUDED_DIRS = ["node_modules", "dist", ".next", ".cache"];
+const SOURCE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx"];
 
 const isProjectFile = (dir: string) => (fp: string) =>
     fp.startsWith(dir) &&
     !EXCLUDED_DIRS.some(d => fp.includes(`/${d}/`)) &&
-    !fp.endsWith(".d.ts");
+    !fp.endsWith(".d.ts") &&
+    SOURCE_EXTENSIONS.some(ext => fp.endsWith(ext));
 
 export function buildContextGraph(dir: string): Graph {
     const graph = new Graph();
@@ -21,7 +23,12 @@ export function buildContextGraph(dir: string): Graph {
     });
 
     if (project.getSourceFiles().length === 0) {
-        project.addSourceFilesAtPaths(`${dir}/**/*.ts`);
+        project.addSourceFilesAtPaths([
+            `${dir}/**/*.ts`,
+            `${dir}/**/*.tsx`,
+            `${dir}/**/*.js`,
+            `${dir}/**/*.jsx`,
+        ]);
     }
 
     const inProject = isProjectFile(dir);

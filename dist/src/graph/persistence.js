@@ -24,7 +24,6 @@ export function loadGraph(filePath) {
         return graph;
     }
     catch {
-        // Cache corrupted — will be rebuilt
         return null;
     }
 }

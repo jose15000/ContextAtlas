@@ -19,7 +19,6 @@ export function addReasoning(prompt, thought, solution) {
         data: { text: thought, timestamp }
     });
     const solutionId = crypto.randomUUID();
-    ;
     graph.addNode({
         id: solutionId,
         type: "implementation",

@@ -4,7 +4,6 @@ import { saveGraph, loadGraph } from "../persistence.js";
 
 const REASONING_CACHE = ".codeatlas-reasoning.json";
 
-
 export function addReasoning(prompt: string, thought: string, solution: string) {
     const cachePath = path.join(process.cwd(), REASONING_CACHE);
 
@@ -26,7 +25,7 @@ export function addReasoning(prompt: string, thought: string, solution: string) 
         data: { text: thought, timestamp }
     });
 
-    const solutionId = crypto.randomUUID();;
+    const solutionId = crypto.randomUUID();
     graph.addNode({
         id: solutionId,
         type: "implementation",

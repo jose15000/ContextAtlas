@@ -5,9 +5,11 @@ import { indexFunctions } from "./extractors/functions.js";
 import { indexInterfaces } from "./extractors/interfaces.js";
 import { indexImports } from "./extractors/imports.js";
 const EXCLUDED_DIRS = ["node_modules", "dist", ".next", ".cache"];
+const SOURCE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx"];
 const isProjectFile = (dir) => (fp) => fp.startsWith(dir) &&
     !EXCLUDED_DIRS.some(d => fp.includes(`/${d}/`)) &&
-    !fp.endsWith(".d.ts");
+    !fp.endsWith(".d.ts") &&
+    SOURCE_EXTENSIONS.some(ext => fp.endsWith(ext));
 export function buildContextGraph(dir) {
     const graph = new Graph();
     const project = new Project({
@@ -15,7 +17,12 @@ export function buildContextGraph(dir) {
         skipAddingFilesFromTsConfig: false,
     });
     if (project.getSourceFiles().length === 0) {
-        project.addSourceFilesAtPaths(`${dir}/**/*.ts`);
+        project.addSourceFilesAtPaths([
+            `${dir}/**/*.ts`,
+            `${dir}/**/*.tsx`,
+            `${dir}/**/*.js`,
+            `${dir}/**/*.jsx`,
+        ]);
     }
     const inProject = isProjectFile(dir);
     const typeChecker = project.getTypeChecker();
