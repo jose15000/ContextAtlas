@@ -2,7 +2,7 @@ import path from "path";
 import { Graph } from "../Graph.js";
 import { saveGraph, loadGraph } from "../persistence.js";
 
-const CHANGES_CACHE = ".codeatlas-changes.json";
+const CHANGES_CACHE = "./changes/codeatlas-changes.json";
 
 export interface CodeChangeEntry {
     file: string;
