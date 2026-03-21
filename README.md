@@ -25,7 +25,7 @@ Basta adicionar o ContextAtlas ao arquivo de configuração do seu cliente MCP f
 
 ## 🛠️ Ferramentas Disponíveis na IA
 
-Com o ContextAtlas ativo, o Agente de IA ganha os seguintes "super poderes" (Tools):
+Com o ContextAtlas ativo, o Agente de IA ganha as seguintes tools:
 
 - **`find_symbol`**: Localiza rapidamente classes, métodos e funções pelo nome no projeto todo.
 - **`trace_callers`**: Descobre quem depende da função X (evitando quebrar código existente!).

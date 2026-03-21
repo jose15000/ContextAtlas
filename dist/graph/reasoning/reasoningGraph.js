@@ -1,7 +1,7 @@
 import path from "path";
 import { Graph } from "../Graph.js";
 import { saveGraph, loadGraph } from "../persistence.js";
-const REASONING_CACHE = ".codeatlas-reasoning.json";
+const REASONING_CACHE = "./context/.codeatlas-reasoning.json";
 export function loadReasoningGraph() {
     const cachePath = path.join(process.cwd(), REASONING_CACHE);
     return loadGraph(cachePath) ?? new Graph();

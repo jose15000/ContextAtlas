@@ -150,6 +150,8 @@ server.registerTool(
     async () => getAllChanges(changesGraph)
 );
 
+
+// Starts the MCP server on stdio transport
 async function main() {
     const transport = new StdioServerTransport();
     await server.connect(transport);

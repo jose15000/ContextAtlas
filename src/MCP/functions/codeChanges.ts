@@ -39,7 +39,7 @@ export function getAllChanges(changesGraph: Graph) {
     }
 
     const changes = Array.from(changesGraph.nodes.values())
-        .filter(n => n.type === "code_change")
+        .filter(n => n.type.code_change)
         .sort((a, b) => a.data.timestamp.localeCompare(b.data.timestamp))
         .map(n => `[${n.data.timestamp}] ${n.data.file}\n  ${n.data.description}`);
 

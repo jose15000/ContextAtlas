@@ -1,16 +1,20 @@
-export type NodeType =
-    "file" |
-    "function" |
-    "method" |
-    "class" |
-    "import" |
-    "user_prompt" |
-    "agent_thought" |
-    "tool_call" |
-    "tool_result" |
-    "code_change" |
-    "implementation" |
-    "context_lookup" |
-    "interface" |
-    "module" |
-    "export";
+import { AgentThought } from "./AgentThought";
+
+export type NodeType = {
+    file: string;
+    function: string;
+    method: string;
+    class: string;
+    import: string;
+    user_prompt: string;
+    agent_thought: AgentThought;
+    tool_call: string;
+    tool_result: string;
+    code_change: string;
+    implementation: string;
+    context_lookup: string;
+    interface: string;
+    module: string;
+    exports: string;
+}
+

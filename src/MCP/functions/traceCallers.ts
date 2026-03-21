@@ -2,7 +2,7 @@ import { Graph } from "../../graph/Graph.js";
 
 export function traceCallers(graph: Graph, functionName: string) {
     const targetNodes = Array.from(graph.nodes.values()).filter(n =>
-        (n.type === "function" || n.type === "method") && n.data.name === functionName
+        (n.type.function || n.type.method) && n.data.name === functionName
     );
 
     if (targetNodes.length === 0) {

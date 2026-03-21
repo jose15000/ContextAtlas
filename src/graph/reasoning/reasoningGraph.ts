@@ -3,7 +3,7 @@ import { Graph } from "../Graph.js";
 import { saveGraph, loadGraph } from "../persistence.js";
 import { IReasoning } from "../../types/Reasoning.js";
 
-const REASONING_CACHE = ".codeatlas-reasoning.json";
+const REASONING_CACHE = "./context/.codeatlas-reasoning.json";
 
 export function loadReasoningGraph(): Graph {
     const cachePath = path.join(process.cwd(), REASONING_CACHE);
