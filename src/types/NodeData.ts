@@ -6,6 +6,7 @@ export type NodeData = {
     text?: string;
     timestamp?: Date;
     diff?: string;
+    agentThought?: string;
     description?: string;
     className?: string;
     methodName?: string
