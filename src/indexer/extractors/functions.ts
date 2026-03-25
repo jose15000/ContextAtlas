@@ -1,7 +1,8 @@
 import { SourceFile, TypeChecker, SyntaxKind } from "ts-morph";
 import { Graph } from "../../graph/Graph.js";
+import { EmbedQuery } from "../../MCP/functions/embedQuery.js";
 
-export function indexFunctions(
+export async function indexFunctions(
     sourceFile: SourceFile,
     graph: Graph,
     typeChecker: TypeChecker,
@@ -14,7 +15,8 @@ export function indexFunctions(
         if (!fnName) continue;
 
         const fnId = `${filePath}#${fnName}`;
-        graph.addNode({ graphType: "Code", id: fnId, type: "function", data: { name: fnName } });
+        const embed = await EmbedQuery(fnName)
+        graph.addNode({ graphType: "Code", id: fnId, type: "function", data: { name: fnName, embedding: embed } });
         graph.addEdge({ from: filePath, to: fnId, type: "DEFINES" });
 
         for (const callExpr of fn.getDescendantsOfKind(SyntaxKind.CallExpression)) {

@@ -15,4 +15,5 @@ export type NodeData = {
     className?: string;
     methodName?: string;
     agentThought?: AgentThought;
+    embedding?: number[];
 }

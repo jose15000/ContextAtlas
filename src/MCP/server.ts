@@ -22,7 +22,7 @@ import { Graph } from "../graph/Graph.js";
 // ─── Load all three graphs into memory at startup ────────────────────────────
 const CACHE_PATH = path.join(process.cwd(), "./context/.codeatlas-cache.json");
 
-const codeGraph = loadOrBuildGraph(CACHE_PATH);
+const codeGraph = await loadOrBuildGraph(CACHE_PATH);
 const reasoningGraph = loadReasoningGraph();
 const changesGraph = loadChangesGraph();
 

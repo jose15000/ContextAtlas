@@ -1,7 +1,8 @@
 import { SourceFile, TypeChecker, SyntaxKind } from "ts-morph";
 import { Graph } from "../../graph/Graph.js";
+import { EmbedQuery } from "../../MCP/functions/embedQuery.js";
 
-export function indexClasses(
+export async function indexClasses(
     sourceFile: SourceFile,
     graph: Graph,
     typeChecker: TypeChecker,
@@ -11,10 +12,11 @@ export function indexClasses(
 
     for (const cls of sourceFile.getClasses()) {
         const className = cls.getName();
+        const embedding = await EmbedQuery(className!)
         if (!className) continue;
 
         const classId = `${filePath}#${className}`;
-        graph.addNode({ graphType: "Code", id: classId, type: "class", data: { name: className } });
+        graph.addNode({ graphType: "Code", id: classId, type: "class", data: { name: className, embedding: embedding } });
         graph.addEdge({ from: filePath, to: classId, type: "DEFINES" });
 
         for (const impl of cls.getImplements()) {

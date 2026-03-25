@@ -29,7 +29,7 @@ function isCacheStale(cachePath: string, dir: string): boolean {
     return getNewestSourceMtime(dir) > cacheMtime;
 }
 
-export function loadOrBuildGraph(cachePath: string): Graph {
+export async function loadOrBuildGraph(cachePath: string): Promise<Graph> {
     const stale = isCacheStale(cachePath, process.cwd());
     const cached = !stale ? loadGraph(cachePath) : null;
 
@@ -44,7 +44,7 @@ export function loadOrBuildGraph(cachePath: string): Graph {
         console.error("[CodeAtlas] No cache found — building graph from source...");
     }
 
-    const graph = buildContextGraph(process.cwd());
+    const graph = await buildContextGraph(process.cwd());
     saveGraph(graph, cachePath);
     console.error(`[CodeAtlas] Graph built and cached (${graph.nodes.size} nodes, ${graph.edges.length} edges)`);
     return graph;

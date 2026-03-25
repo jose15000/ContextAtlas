@@ -21,7 +21,7 @@ Aqui estão todas as ferramentas que desenvolvemos no servidor (`src/MCP/server.
 ### O que fazer quando eu rodar a skill `/test-atlas`
 Siga estes passos estritamente para simular o uso do ContextAtlas:
 
-//turbo
+//turbo-all
 1. Execute `bunx tsc --noEmit` para verificar se nossa camada TypeScript está 100% livre de erros (já que o MCP é rigoroso com schemas/tipagens Zod).
 
 2. Leia o arquivo `src/MCP/server.ts` rapidamente apenas para verificar se o registro de rotas do Zod está válido.

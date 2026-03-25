@@ -4,6 +4,7 @@ import { indexClasses } from "./extractors/classes.js";
 import { indexFunctions } from "./extractors/functions.js";
 import { indexInterfaces } from "./extractors/interfaces.js";
 import { indexImports } from "./extractors/imports.js";
+import { EmbedQuery } from "../MCP/functions/embedQuery.js";
 
 const EXCLUDED_DIRS = ["node_modules", "dist", ".next", ".cache"];
 const SOURCE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx"];
@@ -21,7 +22,7 @@ const isProjectFile = (dir: string) => (fp: string) =>
     !EXCLUDED_PATTERNS.some(pat => pat.test(fp));
 
 
-export function buildContextGraph(dir: string): Graph {
+export async function buildContextGraph(dir: string): Promise<Graph> {
     const graph = new Graph();
 
     const project = new Project({
@@ -44,12 +45,15 @@ export function buildContextGraph(dir: string): Graph {
 
     for (const sourceFile of sourceFiles) {
         const filePath = sourceFile.getFilePath();
-
+        const embedding = await EmbedQuery(filePath)
         graph.addNode({
             graphType: "Code",
             id: filePath,
             type: "file",
-            data: { path: filePath, name: sourceFile.getBaseName() }
+            data: {
+                path: filePath, name: sourceFile.getBaseName(), embedding: embedding!
+
+            }
         });
 
         indexClasses(sourceFile, graph, typeChecker, inProject);
