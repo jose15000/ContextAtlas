@@ -98,19 +98,29 @@ server.registerTool(
         description: "Saves a reasoning entry (prompt → thought → solution) to the agent memory graph.",
         inputSchema: {
             prompt: z.string().describe("The user's original request"),
-            thought: z.string().describe("Your reasoning process"),
+            thoughtDescription: z.string().describe("The description of your reasoning process"),
+            thoughtDetails: z.enum(["decision", "plan", "observation", "bug", "fix", "test"]).describe("the details from your thought process."),
             solution: z.string().describe("The solution you applied"),
+            toolCall: z.object({
+                tool: z.object({
+                    name: z.string(),
+                    description: z.string()
+                }),
+                result: z.string()
+            }).describe("The tool call details including the tool used and the result"),
             agent: z.string().describe("The agent that generated the reasoning"),
             model: z.string().describe("The model that was used"),
             project: z.string().describe("The associated project"),
             run_id: z.string().describe("The execution run ID. Ex: run_1")
         }
     },
-    async ({ prompt, thought, solution, agent, model, project, run_id }) =>
+    async ({ prompt, thoughtDescription, thoughtDetails, solution, toolCall, agent, model, project, run_id }) =>
         saveReasoning(reasoningGraph, {
             prompt,
-            thought,
+            thoughtDescription,
+            thoughtDetails,
             solution,
+            toolCall,
             agent: agent,
             model: model,
             project: project,

@@ -1,5 +1,3 @@
-import { AgentThought } from "./AgentThought";
-
 export type NodeType =
     | "file"
     | "function"
@@ -8,7 +6,6 @@ export type NodeType =
     | "import"
     | "user_prompt"
     | "agent_thought"
-    | AgentThought
     | "tool_call"
     | "tool_result"
     | "code_change"
@@ -17,3 +14,4 @@ export type NodeType =
     | "interface"
     | "module"
     | "exports";
+

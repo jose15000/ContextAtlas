@@ -1,10 +1,11 @@
 import { AgentThought } from "./AgentThought";
-import { GraphType } from "./GraphType";
 import { NodeMetadata } from "./NodeMetadata";
+import { ToolCall } from "./ToolCall";
 
 export interface IReasoning extends NodeMetadata {
     prompt: string;
     thoughtDescription: string;
     thoughtDetails: AgentThought;
+    toolCall: ToolCall;
     solution: string;
 }

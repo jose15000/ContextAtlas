@@ -1,0 +1,63 @@
+{
+  "nodes": [
+    {
+      "graphType": "Reasoning",
+      "id": "8b3448c7-1f81-4061-9d90-67868ddb297c",
+      "type": "user_prompt",
+      "data": {
+        "text": "Escrever testes unitários para todas as funcionalidades do CodeAtlas e reorganizar os arquivos de teste co-localizados",
+        "timestamp": "2026-03-25T01:21:34.812Z"
+      }
+    },
+    {
+      "graphType": "Reasoning",
+      "id": "6dab2a84-541d-4001-a9ec-7efd162c3078",
+      "type": "agent_thought",
+      "data": {
+        "text": "Plano adotado:\n1. Usar bun:test (runtime nativo Bun, sem dependência extra).\n2. Co-localizar cada .test.ts ao lado do seu arquivo-fonte, seguindo o padrão já adotado por Graph.test.ts e persistence.test.ts.\n3. Isolar I/O com fs.mkdtempSync + spy em process.cwd() para testes que escrevem disco.\n4. Usar ts-morph com useInMemoryFileSystem para testar os extractors AST sem precisar de um projeto real.\n5. Bug encontrado: expandGraph.ts linha 25 — condição 'level > depth' estava invertida, causando BFS nunca atravessar. Corrigido para 'level < depth'.\n6. API real do reasoningGraph.ts: addReasoning recebe graph como 1º parâmetro; load/save são funções separadas (loadReasoningGraph / saveReasoningGraph).",
+        "timestamp": "2026-03-25T01:21:34.812Z",
+        "description": "plan"
+      }
+    },
+    {
+      "graphType": "Reasoning",
+      "id": "723fdf3c-dd76-47bc-a10e-3f3636c30962",
+      "type": "tool_call",
+      "data": {
+        "toolCall": {
+          "tool": {
+            "name": "test_tool",
+            "description": "Test tool",
+            "inputSchema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "result": "success"
+        }
+      }
+    },
+    {
+      "graphType": "Reasoning",
+      "id": "13ecfaee-5753-4ebe-b6dd-6a06bfd46ee4",
+      "type": "implementation",
+      "data": {
+        "text": "Entregáveis:\n- src/graph/Graph.test.ts → 9 testes (addNode, getNode, addEdge, getEdgesFrom)\n- src/graph/persistence.test.ts → 9 testes (saveGraph, loadGraph, round-trip, JSON corrompido)\n- src/graph/reasoning/reasoningGraph.test.ts → 12 testes atualizados para a API real\n- src/expansion/expandGraph.test.ts → 8 testes de BFS com controle de profundidade e ciclos\n- session/session.test.ts → 15 testes (addPrompt, addThought, addToolCall, addCodeChange + integração)\n- src/indexer/indexer.test.ts → 6 testes do file-walker recursivo\n- src/indexer/extractors/extractors.test.ts → 19 testes de AST (interfaces, funções, classes, imports)\nTotal: 68 testes, 0 falhas.\nBug corrigido em src/expansion/expandGraph.ts (level > depth → level < depth).",
+        "timestamp": "2026-03-25T01:21:34.812Z"
+      },
+      "metadata": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": "8b3448c7-1f81-4061-9d90-67868ddb297c",
+      "to": "6dab2a84-541d-4001-a9ec-7efd162c3078",
+      "type": "THINKS"
+    },
+    {
+      "from": "6dab2a84-541d-4001-a9ec-7efd162c3078",
+      "to": "13ecfaee-5753-4ebe-b6dd-6a06bfd46ee4",
+      "type": "GENERATED_BY"
+    }
+  ]
+}

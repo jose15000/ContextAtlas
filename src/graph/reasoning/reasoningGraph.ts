@@ -1,9 +1,9 @@
 import path from "path";
 import { Graph } from "../Graph.js";
 import { saveGraph, loadGraph } from "../persistence.js";
-import { IReasoning } from "../../types/Reasoning.js";
+import { NodeData } from "../../types/NodeData.js";
 
-const REASONING_CACHE = "./context/.codeatlas-reasoning.json";
+const REASONING_CACHE = "./context/.codeatlas-data.reasoning?.json";
 
 export function loadReasoningGraph(): Graph {
     const cachePath = path.join(process.cwd(), REASONING_CACHE);
@@ -16,23 +16,34 @@ export function saveReasoningGraph(graph: Graph): void {
 }
 
 
-export function addReasoning(graph: Graph, reasoning: IReasoning): void {
+export function addReasoning(graph: Graph, data: NodeData): void {
+    if (!data.reasoning) return;
+
     const timestamp = new Date();
     const promptId = crypto.randomUUID();
-    graph.addNode({ graphType: "Reasoning", id: promptId, type: "user_prompt", data: { text: reasoning.prompt, timestamp } });
+    graph.addNode({ graphType: "Reasoning", id: promptId, type: "user_prompt", data: { text: data.reasoning.prompt, timestamp } });
 
     const thoughtId = crypto.randomUUID();
-    graph.addNode({ graphType: "Reasoning", id: thoughtId, type: "agent_thought", data: { text: reasoning.thoughtDescription, timestamp, description: reasoning.thoughtDetails } });
+    graph.addNode({ graphType: "Reasoning", id: thoughtId, type: "agent_thought", data: { text: data.reasoning.thoughtDescription, timestamp, description: data.reasoning.thoughtDetails } });
 
+    const toolId = crypto.randomUUID();
+    graph.addNode({
+        graphType: "Reasoning", id: toolId, type: "tool_call", data: {
+            toolCall: {
+                tool: data.toolCall?.tool!,
+                result: data.toolCall?.result!
+            }
+        }
+    })
     const solutionId = crypto.randomUUID();
     graph.addNode({
         graphType: "Reasoning",
-        id: solutionId, type: "implementation", data: { text: reasoning.solution, timestamp },
+        id: solutionId, type: "implementation", data: { text: data.reasoning.solution, timestamp },
         metadata: {
-            agent: reasoning.agent, project:
-                reasoning.project, model: reasoning.model,
-
-            run_id: reasoning.run_id
+            agent: data.reasoning.agent,
+            project: data.reasoning.project,
+            model: data.reasoning.model,
+            run_id: data.reasoning.run_id
         }
     });
 
