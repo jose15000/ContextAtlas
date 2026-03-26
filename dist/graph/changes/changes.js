@@ -11,12 +11,13 @@ export function saveChangesGraph(graph) {
     saveGraph(graph, cachePath);
 }
 export function addCodeChange(graph, entry) {
-    const timestamp = new Date().toISOString();
+    const timestamp = new Date();
     const changeId = crypto.randomUUID();
     graph.addNode({
+        graphType: "Code",
         id: changeId,
         type: "code_change",
-        data: { file: entry.file, agentThought: entry.agentThought, description: entry.description, diff: entry.diff ?? null, timestamp }
+        data: { file: entry.file, agentThought: entry.agentThought, description: entry.description, diff: entry.diff, timestamp }
     });
     graph.addEdge({ from: changeId, to: entry.file, type: "MODIFIES" });
     if (entry.thoughtId) {

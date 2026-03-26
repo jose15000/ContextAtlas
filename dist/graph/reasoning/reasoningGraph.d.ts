@@ -1,6 +1,6 @@
 import { Graph } from "../Graph.js";
-import { IReasoning } from "../../types/Reasoning.js";
+import { NodeData } from "../../types/NodeData.js";
 export declare function loadReasoningGraph(): Graph;
 export declare function saveReasoningGraph(graph: Graph): void;
-export declare function addReasoning(graph: Graph, reasoning: IReasoning): void;
+export declare function addReasoning(graph: Graph, data: NodeData): void;
 //# sourceMappingURL=reasoningGraph.d.ts.map

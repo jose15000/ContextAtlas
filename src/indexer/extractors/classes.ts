@@ -12,7 +12,9 @@ export async function indexClasses(
 
     for (const cls of sourceFile.getClasses()) {
         const className = cls.getName();
-        const embedding = await EmbedQuery(className!)
+        const contextoClasse = `Class ${className} ${cls.getExtends() ? `extends ${cls.getExtends()}` : ''}. Methods: ${cls.getMethods().map(m => m.getName()).join(', ')}`;
+
+        const embedding = await EmbedQuery(contextoClasse)
         if (!className) continue;
 
         const classId = `${filePath}#${className}`;
@@ -30,13 +32,18 @@ export async function indexClasses(
         for (const method of cls.getMethods()) {
             const methodName = method.getName();
             if (!methodName) continue;
+            const params = method.getParameters().map(p => p.getText()).join(', ');
+            const returnType = method.getReturnTypeNode()?.getText() || 'void';
+            const jsDoc = method.getJsDocs()[0]?.getInnerText() || '';
+            const contextoMetodo = `Method ${className}.${methodName}(${params}): ${returnType}. ${jsDoc}`;
+            const embedding = await EmbedQuery(contextoMetodo);
 
             const methodId = `${filePath}#${className}.${methodName}`;
             graph.addNode({
                 graphType: "Code",
                 id: methodId,
                 type: "method",
-                data: { name: `${className}.${methodName}`, className, methodName }
+                data: { name: `${className}.${methodName}`, className, methodName, embedding }
             });
             graph.addEdge({ from: classId, to: methodId, type: "DEFINES" });
 

@@ -1,1 +1,1 @@
-{"version":3,"file":"astIndexer.d.ts","sourceRoot":"","sources":["../../src/indexer/astIndexer.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,KAAK,EAAE,MAAM,mBAAmB,CAAC;AAsB1C,wBAAgB,iBAAiB,CAAC,GAAG,EAAE,MAAM,GAAG,KAAK,CAqCpD"}
+{"version":3,"file":"astIndexer.d.ts","sourceRoot":"","sources":["../../src/indexer/astIndexer.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,KAAK,EAAE,MAAM,mBAAmB,CAAC;AAuB1C,wBAAsB,iBAAiB,CAAC,GAAG,EAAE,MAAM,GAAG,OAAO,CAAC,KAAK,CAAC,CA0CnE"}

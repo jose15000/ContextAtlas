@@ -45,13 +45,14 @@ export async function buildContextGraph(dir: string): Promise<Graph> {
 
     for (const sourceFile of sourceFiles) {
         const filePath = sourceFile.getFilePath();
-        const embedding = await EmbedQuery(filePath)
+        const fileContentContext = `File: ${filePath}. Classes: ${sourceFile.getClasses().map(c => c.getName()).join(', ')}. Functions: ${sourceFile.getFunctions().map(f => f.getName()).join(', ')}.`;
+        const embedding = await EmbedQuery(fileContentContext);
         graph.addNode({
             graphType: "Code",
             id: filePath,
             type: "file",
             data: {
-                path: filePath, name: sourceFile.getBaseName(), embedding: embedding!
+                path: filePath, name: sourceFile.getBaseName(), embedding: embedding
 
             }
         });

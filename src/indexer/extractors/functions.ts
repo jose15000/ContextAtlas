@@ -14,8 +14,13 @@ export async function indexFunctions(
         const fnName = fn.getName();
         if (!fnName) continue;
 
+        const params = fn.getParameters().map(p => p.getText()).join(', ');
+        const returnType = fn.getReturnTypeNode()?.getText() || 'void';
+        const jsDoc = fn.getJsDocs()[0]?.getInnerText() || '';
+        const contextoFuncao = `Function ${fnName}(${params}): ${returnType}. ${jsDoc}`;
+        const embed = await EmbedQuery(contextoFuncao);
+
         const fnId = `${filePath}#${fnName}`;
-        const embed = await EmbedQuery(fnName)
         graph.addNode({ graphType: "Code", id: fnId, type: "function", data: { name: fnName, embedding: embed } });
         graph.addEdge({ from: filePath, to: fnId, type: "DEFINES" });
 

@@ -1,1 +1,1 @@
-{"version":3,"file":"EdgeType.d.ts","sourceRoot":"","sources":["../../src/types/EdgeType.ts"],"names":[],"mappings":"AAAA,MAAM,MAAM,QAAQ,GAChB,SAAS,GACT,SAAS,GACP,OAAO,GACP,YAAY,GACZ,SAAS,GACT,cAAc,GACd,QAAQ,GACR,YAAY,GACZ,UAAU,GACV,mBAAmB,CAAA"}
+{"version":3,"file":"EdgeType.d.ts","sourceRoot":"","sources":["../../src/types/EdgeType.ts"],"names":[],"mappings":"AAAA,MAAM,MAAM,QAAQ,GAChB,SAAS,GACT,SAAS,GACP,OAAO,GACP,YAAY,GACZ,SAAS,GACT,cAAc,GACd,QAAQ,GACR,YAAY,GACZ,UAAU,GACV,OAAO,GACP,mBAAmB,CAAA"}

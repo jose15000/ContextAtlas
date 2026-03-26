@@ -14,9 +14,10 @@ import { saveReasoning } from "./functions/saveReasoning.js";
 import { saveCodeChange, getFileHistory, getAllChanges } from "./functions/codeChanges.js";
 import { loadReasoningGraph } from "../graph/reasoning/reasoningGraph.js";
 import { loadChangesGraph } from "../graph/changes/changes.js";
+import { getBugsByFile } from "./functions/getBugsByFile.js";
 // ─── Load all three graphs into memory at startup ────────────────────────────
 const CACHE_PATH = path.join(process.cwd(), "./context/.codeatlas-cache.json");
-const codeGraph = loadOrBuildGraph(CACHE_PATH);
+const codeGraph = await loadOrBuildGraph(CACHE_PATH);
 const reasoningGraph = loadReasoningGraph();
 const changesGraph = loadChangesGraph();
 console.error(`[CodeAtlas] Reasoning graph: ${reasoningGraph.nodes.size} nodes`);
@@ -56,17 +57,27 @@ server.registerTool("create_reasoning_context_graph", {
     description: "Saves a reasoning entry (prompt → thought → solution) to the agent memory graph.",
     inputSchema: {
         prompt: z.string().describe("The user's original request"),
-        thought: z.string().describe("Your reasoning process"),
+        thoughtDescription: z.string().describe("The description of your reasoning process"),
+        thoughtDetails: z.enum(["decision", "plan", "observation", "bug", "fix", "test"]).describe("the details from your thought process."),
         solution: z.string().describe("The solution you applied"),
+        toolCall: z.object({
+            tool: z.object({
+                name: z.string(),
+                description: z.string()
+            }),
+            result: z.string()
+        }).describe("The tool call details including the tool used and the result"),
         agent: z.string().describe("The agent that generated the reasoning"),
         model: z.string().describe("The model that was used"),
         project: z.string().describe("The associated project"),
         run_id: z.string().describe("The execution run ID. Ex: run_1")
     }
-}, async ({ prompt, thought, solution, agent, model, project, run_id }) => saveReasoning(reasoningGraph, {
+}, async ({ prompt, thoughtDescription, thoughtDetails, solution, toolCall, agent, model, project, run_id }) => saveReasoning(reasoningGraph, {
     prompt,
-    thought,
+    thoughtDescription,
+    thoughtDetails,
     solution,
+    toolCall,
     agent: agent,
     model: model,
     project: project,
@@ -104,6 +115,12 @@ server.registerTool("get_all_changes", {
     description: "Returns all recorded code changes across the project, sorted by time.",
     inputSchema: {}
 }, async () => getAllChanges(changesGraph));
+server.registerTool("find_bugs_by_file", {
+    description: "Returns bugs registered during model reasoning.",
+    inputSchema: {
+        file: z.string().describe("the desired filepath")
+    },
+}, async ({ file }) => getBugsByFile(reasoningGraph, file));
 // Starts the MCP server on stdio transport
 async function main() {
     const transport = new StdioServerTransport();
