@@ -27,3 +27,5 @@ Siga estes passos estritamente para simular o uso do ContextAtlas:
 2. Leia o arquivo `src/MCP/server.ts` rapidamente apenas para verificar se o registro de rotas do Zod está válido.
 
 3. Construa uma resposta informando quantas ferramentas MCP temos implementadas, confirme se a validação TypeScript de todas passou com sucesso e ofereça para criar um pequeno script que invoque (execute localmente simulando o MCP) alguma ferramenta escolhida.
+
+4. Utilize a tool que seja mais adequada ao contexto da conversa atual, sempre visando em armazenar o contexto da melhor forma possível. 

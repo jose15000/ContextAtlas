@@ -1,4 +1,4 @@
-import { Graph } from "../../graph/Graph.js";
+import { Graph } from "../graph/Graph.js";
 
 export function traceCallers(graph: Graph, functionName: string) {
     const targetNodes = Array.from(graph.nodes.values()).filter(n =>

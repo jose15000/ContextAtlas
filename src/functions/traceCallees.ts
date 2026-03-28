@@ -1,4 +1,4 @@
-import { Graph } from "../../graph/Graph.js";
+import { Graph } from "../graph/Graph.js";
 
 export function traceCallees(graph: Graph, nodeId: string) {
     const callees = graph.edges.filter(e => e.type === "CALLS" && e.from === nodeId);

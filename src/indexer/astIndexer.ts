@@ -4,7 +4,7 @@ import { indexClasses } from "./extractors/classes.js";
 import { indexFunctions } from "./extractors/functions.js";
 import { indexInterfaces } from "./extractors/interfaces.js";
 import { indexImports } from "./extractors/imports.js";
-import { EmbedQuery } from "../MCP/functions/embedQuery.js";
+import { EmbedQuery } from "../functions/embedQuery.js";
 
 const EXCLUDED_DIRS = ["node_modules", "dist", ".next", ".cache"];
 const SOURCE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx"];

@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
-import { buildContextGraph } from "../../index.js";
-import { saveGraph, loadGraph } from "../../graph/persistence.js";
-import { Graph } from "../../graph/Graph.js";
+import { buildContextGraph } from "../index.js";
+import { saveGraph, loadGraph } from "../graph/persistence.js";
+import { Graph } from "../graph/Graph.js";
 
 const EXCLUDED_DIRS = ["node_modules", "dist", ".next", ".cache", ".git"];
 

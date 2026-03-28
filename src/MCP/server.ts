@@ -4,20 +4,19 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 import path from "path";
 
-import { loadOrBuildGraph } from "./functions/loadOrBuildGraph.js";
-import { findSymbol } from "./functions/findSymbol.js";
-import { expandNode } from "./functions/expandNode.js";
-import { getFile } from "./functions/getFile.js";
-import { traceCallers } from "./functions/traceCallers.js";
-import { traceCallees } from "./functions/traceCallees.js";
-import { searchSymbol } from "./functions/searchSymbol.js";
-import { saveReasoning } from "./functions/saveReasoning.js";
-import { saveCodeChange, getFileHistory, getAllChanges } from "./functions/codeChanges.js";
+import { loadOrBuildGraph } from "../functions/loadOrBuildGraph.js";
+import { findSymbol } from "../functions/findSymbol.js";
+import { expandNode } from "../functions/expandNode.js";
+import { getFile } from "../functions/getFile.js";
+import { traceCallers } from "../functions/traceCallers.js";
+import { traceCallees } from "../functions/traceCallees.js";
+import { searchSymbol } from "../functions/searchSymbol.js";
+import { saveReasoning } from "../functions/saveReasoning.js";
+import { saveCodeChange, getFileHistory, getAllChanges } from "../functions/codeChanges.js";
 import { loadReasoningGraph } from "../graph/reasoning/reasoningGraph.js";
 import { loadChangesGraph } from "../graph/changes/changes.js";
-import { NodeType } from "../types/NodeType.js";
-import { getBugsByFile } from "./functions/getBugsByFile.js";
-import { Graph } from "../graph/Graph.js";
+import { getBugsByFile } from "../functions/getBugsByFile.js";
+import { semanticSearch } from "../functions/semanticSearch.js";
 
 // ─── Load all three graphs into memory at startup ────────────────────────────
 const CACHE_PATH = path.join(process.cwd(), "./context/.codeatlas-cache.json");
@@ -187,6 +186,37 @@ server.registerTool(
         },
     },
     async ({ file }) => getBugsByFile(reasoningGraph, file)
+);
+
+server.registerTool(
+    "semantic_search",
+    {
+        description: "Returns the graph node that fits the most the given query.",
+        inputSchema: {
+            query: z.string().describe("the research query"),
+            limit: z.number().int().min(1).max(50).default(5).describe("maximum number of results"),
+            threshold: z.number().min(0).max(1).default(0.7).describe("similarity threshold (0-1)")
+        },
+    },
+    async ({ query, limit, threshold }) => {
+        const results = await semanticSearch({
+            query,
+            graph: codeGraph,
+            limit,
+            threshold
+        });
+
+        if (results.length === 0) {
+            return { content: [{ type: "text" as const, text: `No semantic results found for '${query}'.` }] };
+        }
+
+        const formatted = results.map(r => {
+            const file = r.id.split("#")[0];
+            return `[${r.type}] ${r.data.name ?? r.id}\n  id:    ${r.id}\n  file:  ${file}\n  score: ${r.score.toFixed(4)}`;
+        }).join("\n\n");
+
+        return { content: [{ type: "text" as const, text: formatted }] };
+    }
 );
 
 // Starts the MCP server on stdio transport

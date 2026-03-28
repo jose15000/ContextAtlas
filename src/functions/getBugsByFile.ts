@@ -1,4 +1,4 @@
-import { Graph } from "../../graph/Graph.js";
+import { Graph } from "../graph/Graph.js";
 
 export function getBugsByFile(graph: Graph, file: string) {
     const matches = Array.from(graph.nodes.values()).filter(n =>

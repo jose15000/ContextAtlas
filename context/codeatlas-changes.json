@@ -1,0 +1,57 @@
+{
+  "nodes": [
+    {
+      "graphType": "Code",
+      "id": "1441755c-3da5-496b-8920-b58a1819a474",
+      "type": "code_change",
+      "data": {
+        "file": "src/graph/reasoning/reasoningGraph.ts",
+        "agentThought": "fix",
+        "description": "Optimization of addReasoning and test alignment",
+        "diff": "Applied destructuring and async fixes",
+        "timestamp": "2026-03-26T22:28:57.218Z"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "3718fc7f-3841-46ac-ae26-2e805e24b556",
+      "type": "code_change",
+      "data": {
+        "file": "src/MCP/functions/saveReasoning.ts",
+        "agentThought": "fix",
+        "description": "Optimization of addReasoning and test alignment",
+        "diff": "Applied destructuring and async fixes",
+        "timestamp": "2026-03-26T22:28:57.218Z"
+      }
+    },
+    {
+      "graphType": "Code",
+      "id": "ddc427de-3d66-45ca-aea2-f64bc85a94a9",
+      "type": "code_change",
+      "data": {
+        "file": "src/graph/reasoning/reasoningGraph.test.ts",
+        "agentThought": "fix",
+        "description": "Optimization of addReasoning and test alignment",
+        "diff": "Applied destructuring and async fixes",
+        "timestamp": "2026-03-26T22:28:57.218Z"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "1441755c-3da5-496b-8920-b58a1819a474",
+      "to": "src/graph/reasoning/reasoningGraph.ts",
+      "type": "MODIFIES"
+    },
+    {
+      "from": "3718fc7f-3841-46ac-ae26-2e805e24b556",
+      "to": "src/MCP/functions/saveReasoning.ts",
+      "type": "MODIFIES"
+    },
+    {
+      "from": "ddc427de-3d66-45ca-aea2-f64bc85a94a9",
+      "to": "src/graph/reasoning/reasoningGraph.test.ts",
+      "type": "MODIFIES"
+    }
+  ]
+}

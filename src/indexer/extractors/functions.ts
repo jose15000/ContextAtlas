@@ -1,6 +1,6 @@
 import { SourceFile, TypeChecker, SyntaxKind } from "ts-morph";
 import { Graph } from "../../graph/Graph.js";
-import { EmbedQuery } from "../../MCP/functions/embedQuery.js";
+import { EmbedQuery } from "../../functions/embedQuery.js";
 
 export async function indexFunctions(
     sourceFile: SourceFile,

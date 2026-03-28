@@ -1,4 +1,4 @@
-import { Graph } from "../../graph/Graph.js";
+import { Graph } from "../graph/Graph.js";
 
 export function searchSymbol(graph: Graph, query: string) {
     const lowerQuery = query.toLowerCase();

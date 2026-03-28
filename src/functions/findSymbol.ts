@@ -1,4 +1,4 @@
-import { Graph } from "../../graph/Graph.js";
+import { Graph } from "../graph/Graph.js";
 
 export function findSymbol(graph: Graph, symbol: string) {
     const lower = symbol.toLowerCase();

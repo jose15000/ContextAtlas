@@ -1,7 +1,7 @@
-import { Graph } from "../../graph/Graph.js";
-import { addCodeChange, getChangesForFile, saveChangesGraph } from "../../graph/changes/changes.js";
-import { AgentThought } from "../../types/AgentThought.js";
-import { NodeType } from "../../types/NodeType.js";
+import { Graph } from "../graph/Graph.js";
+import { addCodeChange, getChangesForFile, saveChangesGraph } from "../graph/changes/changes.js";
+import { AgentThought } from "../types/AgentThought.js";
+import { NodeType } from "../types/NodeType.js";
 
 export function saveCodeChange(
     changesGraph: Graph,
