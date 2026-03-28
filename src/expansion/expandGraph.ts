@@ -1,6 +1,6 @@
-import { Graph } from "../graph/Graph.js";
-import { Node } from "../types/Node.js";
-import { Edge } from "../types/Edge.js";
+import { Graph } from "../core/graph/Graph.js";
+import { Node } from "../core/graph/models/Node.js";
+import { Edge } from "../core/graph/models/Edge.js";
 
 export interface ExpandResult {
     nodes: Node[];
@@ -25,21 +25,21 @@ export function expandGraph(
     let frontier = [start];
 
     if (depth === 0) {
-        const edges = bidirectional
-            ? graph.edges.filter(e => e.from === start || e.to === start)
+        const adjacentEdges = bidirectional
+            ? graph.edges.filter((e: Edge) => e.from === start || e.to === start)
             : graph.getEdgesFrom(start);
-        subEdges.push(...edges);
+        subEdges.push(...adjacentEdges);
     }
 
     for (let i = 0; i < depth; i++) {
         const nextFrontier: string[] = [];
 
         for (const current of frontier) {
-            const edges = bidirectional
-                ? graph.edges.filter(e => e.from === current || e.to === current)
+            const adjacentEdges = bidirectional
+                ? graph.edges.filter((e: Edge) => e.from === current || e.to === current)
                 : graph.getEdgesFrom(current);
 
-            for (const edge of edges) {
+            for (const edge of adjacentEdges) {
                 subEdges.push(edge);
                 const neighbors = bidirectional ? [edge.from, edge.to] : [edge.to];
                 for (const neighbor of neighbors) {

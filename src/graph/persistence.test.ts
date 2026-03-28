@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from "bun:test";
 import fs from "fs";
 import path from "path";
 import os from "os";
-import { Graph } from "./Graph.js";
+import { Graph } from "../core/graph/Graph.js";
 import { saveGraph, loadGraph } from "./persistence.js";
 
 let tmpDir: string;

@@ -2,11 +2,12 @@ import { describe, it, expect, beforeEach, afterEach, spyOn, mock } from "bun:te
 import fs from "fs";
 import path from "path";
 import os from "os";
-import { Graph } from "../Graph.js";
+import { Graph } from "../../core/graph/Graph.js";
 import { addReasoning, loadReasoningGraph, saveReasoningGraph } from "./reasoningGraph.js";
+import { Node } from "../../core/graph/models/Node.js";
 
 // Mock EmbedQuery 
-mock.module("../../functions/embedQuery.js", () => ({
+mock.module("../../core/indexer/embedQuery.js", () => ({
     EmbedQuery: async () => new Array(384).fill(0),
 }));
 

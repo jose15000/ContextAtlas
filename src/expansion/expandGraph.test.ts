@@ -1,5 +1,5 @@
 import { describe, it, expect } from "bun:test";
-import { Graph } from "../graph/Graph.js";
+import { Graph } from "../core/graph/Graph.js";
 import { expandGraph } from "./expandGraph.js";
 
 // Helper: quickly wire up a graph for traversal tests

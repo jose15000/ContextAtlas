@@ -1,12 +1,11 @@
-import { cosineSimilarity } from "../utils/math.js";
-import { EmbedQuery } from "./embedQuery.js";
-import { semanticData } from "../types/semanticData.js";
-import { SemanticSearchResult } from "./semanticSearchResult.js";
+import { cosineSimilarity } from "../../utils/math.js";
+import { EmbedQuery } from "../../core/indexer/embedQuery.js";
+import { SemanticSearchRequestDTO, SearchResultDTO } from "../../core/dtos/search.dto.js";
 
-export async function semanticSearch(input: semanticData): Promise<SemanticSearchResult[]> {
+export async function semanticSearch(input: SemanticSearchRequestDTO): Promise<SearchResultDTO[]> {
     const embedQuery = await EmbedQuery(input.query);
 
-    const results: SemanticSearchResult[] = [];
+    const results: SearchResultDTO[] = [];
 
     for (const node of input.graph.nodes.values()) {
         const embedding = node.data.embedding;

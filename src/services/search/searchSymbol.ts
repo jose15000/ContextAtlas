@@ -1,4 +1,5 @@
-import { Graph } from "../graph/Graph.js";
+import { Graph } from "../../core/graph/Graph.js";
+import { Node } from "../../core/graph/models/Node.js";
 
 export function searchSymbol(graph: Graph, query: string) {
     const lowerQuery = query.toLowerCase();
@@ -8,9 +9,5 @@ export function searchSymbol(graph: Graph, query: string) {
         return name.toLowerCase().includes(lowerQuery);
     });
 
-    const output = matches.slice(0, 50).map(n =>
-        `${n.data?.name || "Unnamed"} (${n.type}) — ${n.id}`
-    ).join("\n");
-
-    return { content: [{ type: "text" as const, text: output || "No symbols matched the query." }] };
+    return matches.slice(0, 50);
 }

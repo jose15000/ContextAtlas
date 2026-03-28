@@ -1,8 +1,8 @@
 import path from "path";
-import { Graph } from "../Graph.js";
+import { Graph } from "../../core/graph/Graph.js";
 import { saveGraph, loadGraph } from "../persistence.js";
-import { NodeType } from "../../types/NodeType.js";
-import { AgentThought } from "../../types/AgentThought.js";
+import { NodeType } from "../../core/graph/models/NodeType.js";
+import { AgentThought } from "../../core/graph/models/AgentThought.js";
 
 const CHANGES_CACHE = "./context/codeatlas-changes.json";
 

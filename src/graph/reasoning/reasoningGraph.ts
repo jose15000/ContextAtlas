@@ -1,8 +1,8 @@
 import path from "path";
-import { Graph } from "../Graph.js";
+import { Graph } from "../../core/graph/Graph.js";
 import { saveGraph, loadGraph } from "../persistence.js";
-import { NodeData } from "../../types/NodeData.js";
-import { EmbedQuery } from "../../functions/embedQuery.js";
+import { NodeData } from "../../core/graph/models/NodeData.js";
+import { EmbedQuery } from "../../core/indexer/embedQuery.js";
 
 const REASONING_CACHE = "./context/.codeatlas-reasoning.json";
 

@@ -1,5 +1,5 @@
 import { SourceFile } from "ts-morph";
-import { Graph } from "../../graph/Graph.js";
+import { Graph } from "../../core/graph/Graph.js";
 
 export function indexInterfaces(sourceFile: SourceFile, graph: Graph) {
     const filePath = sourceFile.getFilePath();

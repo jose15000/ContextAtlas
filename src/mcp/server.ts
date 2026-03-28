@@ -4,19 +4,14 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 import path from "path";
 
-import { loadOrBuildGraph } from "../functions/loadOrBuildGraph.js";
-import { findSymbol } from "../functions/findSymbol.js";
-import { expandNode } from "../functions/expandNode.js";
-import { getFile } from "../functions/getFile.js";
-import { traceCallers } from "../functions/traceCallers.js";
-import { traceCallees } from "../functions/traceCallees.js";
-import { searchSymbol } from "../functions/searchSymbol.js";
-import { saveReasoning } from "../functions/saveReasoning.js";
-import { saveCodeChange, getFileHistory, getAllChanges } from "../functions/codeChanges.js";
+import { loadOrBuildGraph } from "../services/graph/loadOrBuildGraph.js";
 import { loadReasoningGraph } from "../graph/reasoning/reasoningGraph.js";
 import { loadChangesGraph } from "../graph/changes/changes.js";
-import { getBugsByFile } from "../functions/getBugsByFile.js";
-import { semanticSearch } from "../functions/semanticSearch.js";
+
+import { SearchHandlers } from "./handlers/search.js";
+import { GraphHandlers } from "./handlers/graph.js";
+import { CodeHandlers } from "./handlers/code.js";
+import { HistoryHandlers } from "./handlers/history.js";
 
 // ─── Load all three graphs into memory at startup ────────────────────────────
 const CACHE_PATH = path.join(process.cwd(), "./context/.codeatlas-cache.json");
@@ -41,7 +36,7 @@ server.registerTool(
         description: "Find code entities (functions, classes, methods, interfaces) by name. Returns id, type, file and name.",
         inputSchema: { symbol: z.string().describe("Name or partial name to search for, e.g. 'login'") }
     },
-    async ({ symbol }) => findSymbol(codeGraph, symbol)
+    async ({ symbol }) => SearchHandlers.handleFindSymbol(codeGraph, symbol)
 );
 
 server.registerTool(
@@ -53,7 +48,7 @@ server.registerTool(
             depth: z.number().int().min(1).max(5).describe("Number of hops to expand (1-5)")
         }
     },
-    async ({ nodeId, depth }) => expandNode(codeGraph, nodeId, depth)
+    async ({ nodeId, depth }) => GraphHandlers.handleExpandNode(codeGraph, nodeId, depth)
 );
 
 server.registerTool(
@@ -62,7 +57,7 @@ server.registerTool(
         description: "Returns the text content of a specified file.",
         inputSchema: { path: z.string().describe("Path to the file to read") }
     },
-    async ({ path: filePath }) => getFile(filePath)
+    async ({ path: filePath }) => CodeHandlers.handleGetFile(filePath)
 );
 
 server.registerTool(
@@ -71,7 +66,7 @@ server.registerTool(
         description: "Finds all functions/methods that call the given function. Shows who depends on this.",
         inputSchema: { functionName: z.string().describe("Name of the function or method to trace callers for") }
     },
-    async ({ functionName }) => traceCallers(codeGraph, functionName)
+    async ({ functionName }) => CodeHandlers.handleTraceCallers(codeGraph, functionName)
 );
 
 server.registerTool(
@@ -80,7 +75,7 @@ server.registerTool(
         description: "Finds all functions/methods called by the given node. Shows what this depends on.",
         inputSchema: { nodeId: z.string().describe("Full node ID of the function/method") }
     },
-    async ({ nodeId }) => traceCallees(codeGraph, nodeId)
+    async ({ nodeId }) => CodeHandlers.handleTraceCallees(codeGraph, nodeId)
 );
 
 server.registerTool(
@@ -89,7 +84,7 @@ server.registerTool(
         description: "Search for code symbols by partial name. Returns id, type and name.",
         inputSchema: { query: z.string().describe("Partial string query to search for") }
     },
-    async ({ query }) => searchSymbol(codeGraph, query)
+    async ({ query }) => SearchHandlers.handleSearchSymbol(codeGraph, query)
 );
 
 // Reasoning Graph tools
@@ -116,16 +111,16 @@ server.registerTool(
         }
     },
     async ({ prompt, thoughtDescription, thoughtDetails, solution, toolCall, agent, model, project, run_id }) =>
-        saveReasoning(reasoningGraph, {
+        HistoryHandlers.handleSaveReasoning(reasoningGraph, {
             prompt,
             thoughtDescription,
             thoughtDetails,
             solution,
             toolCall,
-            agent: agent,
-            model: model,
-            project: project,
-            run_id: run_id
+            agent,
+            model,
+            project,
+            run_id
         })
 );
 
@@ -144,7 +139,7 @@ server.registerTool(
             thoughtId: z.string().optional().describe("Optional: ID of the agent thought that caused this change")
         }
     },
-    async ({ file, description, agentThought, diff, thoughtId }) => saveCodeChange(changesGraph, file, agentThought, description, diff, thoughtId)
+    async ({ file, description, agentThought, diff, thoughtId }) => HistoryHandlers.handleSaveCodeChange(changesGraph, { file, description, agentThought, diff, thoughtId })
 );
 
 server.registerTool(
@@ -164,7 +159,7 @@ server.registerTool(
             ]).describe("use it to register the agent thought").optional(),
         }
     },
-    async ({ file, nodeType }) => getFileHistory(changesGraph, nodeType, file)
+    async ({ file, nodeType }) => HistoryHandlers.handleGetFileHistory(changesGraph, nodeType, file)
 );
 
 server.registerTool(
@@ -173,7 +168,7 @@ server.registerTool(
         description: "Returns all recorded code changes across the project, sorted by time.",
         inputSchema: {}
     },
-    async () => getAllChanges(changesGraph)
+    async () => HistoryHandlers.handleGetAllChanges(changesGraph)
 );
 
 
@@ -185,7 +180,7 @@ server.registerTool(
             file: z.string().describe("the desired filepath")
         },
     },
-    async ({ file }) => getBugsByFile(reasoningGraph, file)
+    async ({ file }) => HistoryHandlers.handleGetBugsByFile(reasoningGraph, file)
 );
 
 server.registerTool(
@@ -198,25 +193,7 @@ server.registerTool(
             threshold: z.number().min(0).max(1).default(0.7).describe("similarity threshold (0-1)")
         },
     },
-    async ({ query, limit, threshold }) => {
-        const results = await semanticSearch({
-            query,
-            graph: codeGraph,
-            limit,
-            threshold
-        });
-
-        if (results.length === 0) {
-            return { content: [{ type: "text" as const, text: `No semantic results found for '${query}'.` }] };
-        }
-
-        const formatted = results.map(r => {
-            const file = r.id.split("#")[0];
-            return `[${r.type}] ${r.data.name ?? r.id}\n  id:    ${r.id}\n  file:  ${file}\n  score: ${r.score.toFixed(4)}`;
-        }).join("\n\n");
-
-        return { content: [{ type: "text" as const, text: formatted }] };
-    }
+    async ({ query, limit, threshold }) => SearchHandlers.handleSemanticSearch(codeGraph, query, limit, threshold)
 );
 
 // Starts the MCP server on stdio transport
