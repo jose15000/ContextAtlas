@@ -1,6 +1,6 @@
 {
   "name": "@contextatlas/core",
-  "version": "1.0.56",
+  "version": "1.0.57",
   "type": "module",
   "description": "ContextAtlas context graph database and MCP server",
   "main": "./dist/index.js",
@@ -13,7 +13,8 @@
   },
   "files": [
     "dist/**/*.js",
-    "dist/**/*.d.ts"
+    "dist/**/*.d.ts",
+    ".agents"
   ],
   "bin": {
     "mcp-atlas": "./dist/mcp/server.js"
