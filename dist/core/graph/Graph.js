@@ -15,4 +15,7 @@ export class Graph {
     getEdgesFrom(id) {
         return this.edges.filter(e => e.from === id);
     }
+    getEdgesTo(id) {
+        return this.edges.filter(e => e.to === id);
+    }
 }

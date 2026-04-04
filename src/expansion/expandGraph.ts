@@ -1,4 +1,4 @@
-import { Graph } from "../core/graph/Graph.js";
+import  { Graph } from "../core/graph/Graph.js";
 import { Node } from "../core/graph/models/Node.js";
 import { Edge } from "../core/graph/models/Edge.js";
 

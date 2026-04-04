@@ -1,5 +1,5 @@
-import { Edge } from "./models/Edge.js"
-import { Node } from "./models/Node.js"
+import type { Edge } from "./models/Edge.js"
+import type { Node } from "./models/Node.js"
 
 export class Graph {
 

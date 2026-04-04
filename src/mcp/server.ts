@@ -12,6 +12,7 @@ import { SearchHandlers } from "./handlers/search.js";
 import { GraphHandlers } from "./handlers/graph.js";
 import { CodeHandlers } from "./handlers/code.js";
 import { HistoryHandlers } from "./handlers/history.js";
+import { ImpactHandlers } from "./handlers/impact.js";
 // ─── Load all three graphs into memory at startup ────────────────────────────
 const CACHE_PATH = path.join(process.cwd(), "./context/.codeatlas-cache.json");
 
@@ -194,6 +195,19 @@ server.registerTool(
     },
     async ({ query, limit, threshold }) => SearchHandlers.handleSemanticSearch(codeGraph, query, limit, threshold)
 );
+
+server.registerTool(
+    "get_impact",
+    {
+        description: "Returns the weights from the impacted nodes",
+        inputSchema: {
+            modifiedNodeIds: z.array(z.string()).describe("the IDs from modified nodes"),
+            threshold: z.number().optional()       
+        },
+    },
+    async ({ modifiedNodeIds, threshold }) => ImpactHandlers.handleGetImpact(codeGraph, modifiedNodeIds, threshold)
+);
+
 
 // Starts the MCP server on stdio transport
 async function main() {

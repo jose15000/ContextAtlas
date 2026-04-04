@@ -15,8 +15,7 @@
     "dist"
   ],
   "bin": {
-    "mcp-atlas": "./dist/mcp/server.js",
-    "mcp-atlas-ui": "./dist/ui.js"
+    "mcp-atlas": "./dist/mcp/server.js"
   },
   "publishConfig": {
     "access": "public"
@@ -24,10 +23,8 @@
   "scripts": {
     "test": "bun test",
     "dev": "bun run --watch src/index.ts",
-    "dev:ui": "cd ui && npm run dev",
     "mcp": "tsc -p tsconfig.build.json && chmod 755 dist/mcp/server.js",
-    "build:ui": "cd ui && npm install && npm run build",
-    "build": "tsc -p tsconfig.build.json && chmod +x dist/mcp/server.js dist/ui.js && node dist/scripts/copyAgents.js && npm run build:ui && rm -rf dist/public && cp -r ui/dist dist/public",
+    "build": "tsc -p tsconfig.build.json && chmod +x dist/mcp/server.js dist/ui.js && node dist/scripts/copyAgents.js",
     "prepublishOnly": "npm run build",
     "postinstall": "node dist/scripts/postinstall.js"
   },

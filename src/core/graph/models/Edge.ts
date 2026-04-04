@@ -4,5 +4,5 @@ export type Edge = {
     from: string;
     to: string;
     type: EdgeType;
-    weight: number
+    weight?: number
 }
