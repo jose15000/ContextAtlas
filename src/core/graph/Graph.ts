@@ -22,4 +22,8 @@ export class Graph {
         return this.edges.filter(e => e.from === id)
     }
 
+    getEdgesTo(id: string) {
+        return this.edges.filter(e => e.to === id)
+    }
+
 }

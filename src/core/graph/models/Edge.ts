@@ -1,7 +1,8 @@
-import { EdgeType } from "./EdgeType";
+import type { EdgeType } from "./EdgeType";
 
 export type Edge = {
     from: string;
     to: string;
     type: EdgeType;
+    weight: number
 }

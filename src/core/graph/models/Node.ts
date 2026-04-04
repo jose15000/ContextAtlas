@@ -1,7 +1,7 @@
-import { GraphType } from "./GraphType";
-import { NodeData } from "./NodeData";
-import { NodeMetadata } from "./NodeMetadata";
-import { NodeType } from "./NodeType";
+import type { GraphType } from "./GraphType";
+import type { NodeData } from "./NodeData";
+import type { NodeMetadata } from "./NodeMetadata";
+import type { NodeType } from "./NodeType";
 
 export type Node = {
     id: string;
