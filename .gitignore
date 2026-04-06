@@ -45,6 +45,9 @@ package-lock.json
 .codeatlas-cache.json
 .codeatlas-reasoning.json
 .codeatlas-changes.json
+cache_clean.json
+cache_partial.json
+test_client.ts
 
 .npmrc
 
