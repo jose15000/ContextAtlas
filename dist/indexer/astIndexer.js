@@ -5,7 +5,6 @@ import { indexFunctions } from "./extractors/functions.js";
 import { indexInterfaces } from "./extractors/interfaces.js";
 import { indexImports } from "./extractors/imports.js";
 import { indexExportedObjects } from "./extractors/exportedObjects.js";
-import { EmbedQuery } from "../core/indexer/embedQuery.js";
 const EXCLUDED_DIRS = ["node_modules", "dist", ".next", ".cache"];
 const SOURCE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx"];
 const EXCLUDED_PATTERNS = [
@@ -42,14 +41,12 @@ export async function buildContextGraph(dir) {
 }
 async function indexSourceFile(sourceFile, graph, typeChecker, inProject) {
     const filePath = sourceFile.getFilePath();
-    const fileContentContext = `File: ${filePath}. Classes: ${sourceFile.getClasses().map(c => c.getName()).join(', ')}. Functions: ${sourceFile.getFunctions().map(f => f.getName()).join(', ')}.`;
-    const embedding = await EmbedQuery(fileContentContext);
     graph.addNode({
         graphType: "Code",
         id: filePath,
         type: "file",
         data: {
-            path: filePath, name: sourceFile.getBaseName(), embedding: embedding
+            path: filePath, name: sourceFile.getBaseName()
         }
     });
     await indexClasses(sourceFile, graph, typeChecker, inProject);

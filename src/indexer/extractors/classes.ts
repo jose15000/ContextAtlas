@@ -12,13 +12,10 @@ export async function indexClasses(
 
     for (const cls of sourceFile.getClasses()) {
         const className = cls.getName();
-        const contextoClasse = `Class ${className} ${cls.getExtends() ? `extends ${cls.getExtends()}` : ''}. Methods: ${cls.getMethods().map(m => m.getName()).join(', ')}`;
-
-        const embedding = await EmbedQuery(contextoClasse)
         if (!className) continue;
 
         const classId = `${filePath}#${className}`;
-        graph.addNode({ graphType: "Code", id: classId, type: "class", data: { name: className, embedding: embedding } });
+        graph.addNode({ graphType: "Code", id: classId, type: "class", data: { name: className } });
         graph.addEdge({ from: filePath, to: classId, type: "DEFINES" });
 
         for (const impl of cls.getImplements()) {

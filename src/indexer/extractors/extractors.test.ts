@@ -1,4 +1,4 @@
-import { describe, it, expect } from "bun:test";
+import { describe, it, expect, mock } from "bun:test";
 import { Project } from "ts-morph";
 import { Graph } from "../../core/graph/Graph.js";
 import { Edge } from "../../core/graph/models/Edge.js";
@@ -6,6 +6,11 @@ import { indexClasses } from "./classes.js";
 import { indexFunctions } from "./functions.js";
 import { indexImports } from "./imports.js";
 import { indexInterfaces } from "./interfaces.js";
+
+// Mock EmbedQuery to avoid loading the real ML model during tests
+mock.module("../../core/indexer/embedQuery.js", () => ({
+    EmbedQuery: async () => new Array(384).fill(0),
+}));
 
 // ---------------------------------------------------------------------------
 // Helpers

@@ -5,7 +5,6 @@ import { indexFunctions } from "./extractors/functions.js";
 import { indexInterfaces } from "./extractors/interfaces.js";
 import { indexImports } from "./extractors/imports.js";
 import { indexExportedObjects } from "./extractors/exportedObjects.js";
-import { EmbedQuery } from "../core/indexer/embedQuery.js";
 
 const EXCLUDED_DIRS = ["node_modules", "dist", ".next", ".cache"];
 const SOURCE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx"];
@@ -53,15 +52,12 @@ export async function buildContextGraph(dir: string): Promise<Graph> {
 
 async function indexSourceFile(sourceFile: SourceFile, graph: Graph, typeChecker: TypeChecker, inProject: (fp: string) => boolean) {
     const filePath = sourceFile.getFilePath();
-    const fileContentContext = `File: ${filePath}. Classes: ${sourceFile.getClasses().map(c => c.getName()).join(', ')}. Functions: ${sourceFile.getFunctions().map(f => f.getName()).join(', ')}.`;
-    const embedding = await EmbedQuery(fileContentContext);
     graph.addNode({
         graphType: "Code",
         id: filePath,
         type: "file",
         data: {
-            path: filePath, name: sourceFile.getBaseName(), embedding: embedding
-
+            path: filePath, name: sourceFile.getBaseName()
         }
     });
 

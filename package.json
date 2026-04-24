@@ -35,10 +35,8 @@
     "@elysiajs/static": "^1.4.7",
     "@huggingface/transformers": "^4.1.0",
     "@modelcontextprotocol/sdk": "^1.27.1",
-    "@xyflow/react": "^12.10.2",
     "chokidar": "^5.0.0",
     "elysia": "^1.4.27",
-    "lucide-react": "^1.7.0",
     "sharp": "^0.34.5",
     "ts-morph": "^27.0.2",
     "zod": "^4.3.6"
