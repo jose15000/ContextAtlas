@@ -1,4 +1,3 @@
 import { Graph } from "../../core/graph/Graph.js";
-import { Node } from "../../core/graph/models/Node.js";
-export declare function findSymbol(graph: Graph, symbol: string): Node[];
+export declare function findSymbol(graph: Graph, symbol: string): import("../../core/graph/models/Node.js").Node[];
 //# sourceMappingURL=findSymbol.d.ts.map

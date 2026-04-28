@@ -22,7 +22,7 @@ export const ImpactHandlers = {
             const name = node?.data?.name ?? nodeId;
             const type = node?.type ?? "UNKNOWN";
             const file = nodeId.split("#")[0];
-            
+
             return `[${type}] ${name}\n  id:     ${nodeId}\n  file:   ${file}\n  impact: ${score.toFixed(4)}`;
         });
 

@@ -1,5 +1,4 @@
 import { Graph } from "../../core/graph/Graph.js";
-import { Node } from "../../core/graph/models/Node.js";
 
 export function findSymbol(graph: Graph, symbol: string) {
     const lower = symbol.toLowerCase();

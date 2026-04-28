@@ -12,6 +12,8 @@ import { GraphHandlers } from "./handlers/graph.js";
 import { CodeHandlers } from "./handlers/code.js";
 import { HistoryHandlers } from "./handlers/history.js";
 import { ImpactHandlers } from "./handlers/impact.js";
+import { BlastRadiusHandlers } from "./handlers/blastRadius.js";
+import { DiscoveryHandlers } from "./handlers/discovery.js";
 // ─── Read package version ─────────────────────────────────────────────────────
 const require = createRequire(import.meta.url);
 const { version: PKG_VERSION } = require("../../package.json");
@@ -136,6 +138,17 @@ server.registerTool("get_impact", {
         threshold: z.number().optional()
     },
 }, async ({ modifiedNodeIds, threshold }) => ImpactHandlers.handleGetImpact(codeGraph, modifiedNodeIds, threshold));
+server.registerTool("blast_radius", {
+    description: "Analyzes the impact of a proposed change using a natural language query. It automatically finds the most impacted node and traces its callers.",
+    inputSchema: {
+        query: z.string().describe("Natural language description of the change, e.g. 'rename the Graph class'"),
+        threshold: z.number().min(0).max(1).default(0.3).describe("Minimum similarity threshold (0-1). Lower = more results.")
+    },
+}, async ({ query, threshold }) => BlastRadiusHandlers.handleBlastRadius(codeGraph, query, threshold));
+server.registerTool("discovery", {
+    description: "Analyze the project graph and return the initial context containing top core files, central components, and overall project scale. Useful to orientation after installation.",
+    inputSchema: {}
+}, async () => DiscoveryHandlers.handleDiscovery(codeGraph));
 // Starts the MCP server on stdio transport
 async function main() {
     const transport = new StdioServerTransport();
