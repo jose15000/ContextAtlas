@@ -1,6 +1,6 @@
 {
   "name": "@contextatlas/core",
-  "version": "1.0.63",
+  "version": "1.1.0",
   "type": "module",
   "description": "ContextAtlas context graph database and MCP server",
   "main": "./dist/index.js",
