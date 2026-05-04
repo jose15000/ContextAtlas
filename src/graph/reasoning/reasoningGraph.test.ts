@@ -4,6 +4,7 @@ import path from "path";
 import os from "os";
 import { Graph } from "../../core/graph/Graph.js";
 import { addReasoning, loadReasoningGraph, saveReasoningGraph } from "./reasoningGraph.js";
+import { flushAllSaves } from "../persistence.js";
 import { Node } from "../../core/graph/models/Node.js";
 
 // Mock EmbedQuery 
@@ -72,6 +73,7 @@ describe("saveReasoningGraph", () => {
         const g = new Graph();
         expect(fs.existsSync(cachePath())).toBe(false);
         saveReasoningGraph(g);
+        flushAllSaves();
         expect(fs.existsSync(cachePath())).toBe(true);
     });
 
@@ -81,6 +83,7 @@ describe("saveReasoningGraph", () => {
         g.addEdge({ from: "n1", to: "n2", type: "THINKS" });
 
         saveReasoningGraph(g);
+        flushAllSaves();
 
         const loaded = loadReasoningGraph();
         expect(loaded.nodes.size).toBe(1);
@@ -191,6 +194,7 @@ describe("fluxo completo de persistência", () => {
         const g1 = loadReasoningGraph();
         await addReasoning(g1, { reasoning: { prompt: "Como funciona o BFS?", thoughtDescription: "O BFS usa uma fila e um Set de visitados", thoughtDetails: "decision", solution: "Implementei expandGraph com BFS iterativo", toolCall: { tool: { name: "t", description: "d" }, result: "r" } } } as any);
         saveReasoningGraph(g1);
+        flushAllSaves();
 
         // Sessão 2: recarrega e verifica
         const g2 = loadReasoningGraph();

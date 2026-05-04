@@ -1,13 +1,11 @@
-import { Graph } from "../core/graph/Graph.js";
-import { discovery } from "../graph/discovery/index.js";
-
-function createOnboardingInstructions(discovery: string) {
+import { discovery } from "../../graph/discovery/index.js";
+function createOnboardingInstructions(discoveryOutput) {
     const prompt = `
     You are onboarding a developer into a codebase.
 
 Based on the following key files and components:
 
-${discovery}
+${discoveryOutput}
 
 Your job:
 1. Identify the architecture style (if unclear, say so)
@@ -20,16 +18,16 @@ Your job:
 Rules:
 - Do NOT assume best practices without evidence
 - If something is unclear, explicitly say it
-- Focus on behavior, not just structure.`
+- Focus on behavior, not just structure.`;
     return prompt;
 }
-
 export const onboardingHandler = {
-    HandleOnboarding: async (graph: Graph, prompt: string) => {
+    HandleOnboarding: async (graph) => {
         const getTopFiles = discovery(graph);
-        const response = createOnboardingInstructions(prompt);
+        const discoveryOutput = JSON.stringify(getTopFiles, null, 2);
+        const response = createOnboardingInstructions(discoveryOutput);
         return {
-            content: [{ type: "text" as const, text: response }]
+            content: [{ type: "text", text: response }]
         };
     },
-}
+};
