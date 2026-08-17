@@ -1,6 +1,6 @@
 {
   "name": "@contextatlas/core",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "type": "module",
   "description": "ContextAtlas context graph database and MCP server",
   "main": "./dist/index.js",
@@ -15,7 +15,8 @@
     "dist"
   ],
   "bin": {
-    "mcp-atlas": "./dist/mcp/server.js"
+    "mcp-atlas": "./dist/mcp/server.js",
+    "contextatlas": "./dist/mcp/server.js"
   },
   "publishConfig": {
     "access": "public"

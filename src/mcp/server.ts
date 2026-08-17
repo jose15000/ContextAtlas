@@ -245,6 +245,48 @@ server.registerTool(
     async () => onboardingHandler.HandleOnboarding(codeGraph)
 )
 
+// ─── CLI Command Dispatcher ───────────────────────────────────────────────────
+const args = process.argv.slice(2);
+const command = args[0];
+
+if (command === "init") {
+    const targetDir = process.cwd();
+    const contextDir = path.resolve(targetDir, "context");
+    const agentsDir = path.resolve(targetDir, ".agents");
+
+    if (!fs.existsSync(contextDir)) {
+        fs.mkdirSync(contextDir, { recursive: true });
+    }
+    if (!fs.existsSync(agentsDir)) {
+        fs.mkdirSync(agentsDir, { recursive: true });
+    }
+
+    const configPath = path.resolve(contextDir, "codeatlas-config.json");
+    if (!fs.existsSync(configPath)) {
+        fs.writeFileSync(
+            configPath,
+            JSON.stringify({ version: PKG_VERSION, createdAt: new Date().toISOString(), autoIndex: true }, null, 2),
+            "utf-8"
+        );
+    }
+
+    console.log("✅ [ContextAtlas] Projetos e diretórios /context e .agents inicializados com sucesso!");
+    process.exit(0);
+}
+
+if (command === "--help" || command === "-h") {
+    console.log(`
+@contextatlas/core v${PKG_VERSION}
+
+Uso:
+  npx @contextatlas/core init     Inicializa os diretórios /context e .agents
+  npx @contextatlas/core start    Inicia o servidor MCP via stdio (padrão)
+`);
+    process.exit(0);
+}
+
+import fs from "fs";
+
 // Starts the MCP server on stdio transport
 async function main() {
     const transport = new StdioServerTransport();
